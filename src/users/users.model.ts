@@ -5,7 +5,9 @@ import {
   Column,
   DataType,
   BelongsToMany,
+  HasMany,
 } from 'sequelize-typescript';
+import { Journal } from 'src/journal/journal.model';
 import { Role } from 'src/roles/roles.model';
 import { UserRoles } from 'src/roles/user-roles.model';
 interface UserCreationAttrs {
@@ -51,4 +53,7 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @BelongsToMany(() => Role, () => UserRoles)
   roles: Role[];
+
+  @HasMany(() => Journal)
+  journal: Journal[];
 }
