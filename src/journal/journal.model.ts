@@ -28,6 +28,7 @@ export class Journal extends Model<Journal, JournalCreationAttrs> {
     primaryKey: true,
   })
   id: number;
+
   @ApiProperty({
     example: '"2023-11-10T12:30:00"',
     description: 'Время создания записи',
@@ -37,6 +38,7 @@ export class Journal extends Model<Journal, JournalCreationAttrs> {
     allowNull: false,
   })
   datetime: string;
+
   @ApiProperty({ example: '120', description: 'Систолическое давление' })
   @Column({
     type: DataType.INTEGER,
@@ -63,19 +65,19 @@ export class Journal extends Model<Journal, JournalCreationAttrs> {
     type: DataType.STRING,
     allowNull: true,
   })
-  medications: string;
+  medications?: string;
 
   @ApiProperty({ example: 'Головная боль', description: 'Жалобы' })
   @Column({
     type: DataType.STRING,
     allowNull: true,
   })
-  complaints: string;
+  complaints?: string;
 
   @ForeignKey(() => User)
   @Column({ type: DataType.INTEGER })
   userId: number;
 
   @BelongsTo(() => User)
-  author: User;
+  author?: User;
 }
