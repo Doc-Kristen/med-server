@@ -16,9 +16,12 @@ export class AuthService {
     private userService: UsersService,
     private jwtService: JwtService,
   ) {}
-  async login(userDto: CreateUserDto) {
+  async login(
+    userDto: CreateUserDto,
+  ): Promise<{ user: CreateUserDto; accessToken: string }> {
     const user = await this.validateUser(userDto);
-    return this.generateToken(user);
+    const accessToken = await this.generateToken(user);
+    return { user, accessToken: accessToken.token };
   }
 
   async registration(userDto: CreateUserDto) {
