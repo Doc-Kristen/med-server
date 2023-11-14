@@ -58,4 +58,14 @@ export class AuthService {
     }
     throw new UnauthorizedException({ message: 'Неверный логин или пароль' });
   }
+
+  async extractUserIdFromToken(token: string): Promise<number> {
+    try {
+      const userToken = token.split(' ')[1];
+      const decodedToken = await this.jwtService.decode(userToken);
+      return decodedToken.id;
+    } catch (error) {
+      throw new UnauthorizedException('Недействительный токен');
+    }
+  }
 }
