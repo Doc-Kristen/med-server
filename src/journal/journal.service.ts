@@ -10,8 +10,9 @@ export class JournalService {
     @InjectModel(Journal) private journalRepository: typeof Journal,
     private authService: AuthService,
   ) {}
-  async create(dto: CreateJournalDto) {
-    const journal = await this.journalRepository.create(dto);
+  async create(token: string, dto: CreateJournalDto) {
+    const userId = await this.authService.extractUserIdFromToken(token);
+    const journal = await this.journalRepository.create({ ...dto, userId });
     return journal;
   }
 

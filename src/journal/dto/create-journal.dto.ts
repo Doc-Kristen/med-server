@@ -9,8 +9,6 @@ import {
 } from 'class-validator';
 
 export class CreateJournalDto {
-  readonly userId: number;
-
   @IsNotEmpty({ message: 'Поле обязательно для заполнения' })
   @IsString({ message: 'Некорректная дата' })
   readonly datetime: string;

@@ -19,8 +19,11 @@ export class JournalController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  createJournal(@Body() dto: CreateJournalDto) {
-    return this.journalService.create(dto);
+  createJournal(
+    @Headers('authorization') authorization: string,
+    @Body() dto: CreateJournalDto,
+  ) {
+    return this.journalService.create(authorization, dto);
   }
 
   @Delete()
