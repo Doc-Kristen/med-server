@@ -37,4 +37,29 @@ export class JournalService {
     await journal.destroy();
     return { message: `Запись успешно удалена` };
   }
+
+  async update(token: string, journalId: number, updateDto: CreateJournalDto) {
+    const userId = await this.authService.extractUserIdFromToken(token);
+
+    if (!userId) {
+      throw new NotFoundException('Недействительный токен');
+    }
+
+    const journal = await this.journalRepository.findOne({
+      where: {
+        id: journalId,
+        userId: userId,
+      },
+    });
+
+    if (!journal) {
+      throw new NotFoundException(
+        `Запись с идентификатором ${journalId} не найдена`,
+      );
+    }
+
+    await journal.update(updateDto);
+
+    return journal;
+  }
 }
