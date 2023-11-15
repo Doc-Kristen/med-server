@@ -18,10 +18,10 @@ export class AuthService {
   ) {}
   async login(
     userDto: CreateUserDto,
-  ): Promise<{ user: CreateUserDto; accessToken: string }> {
+  ): Promise<{ userId: number; accessToken: string }> {
     const user = await this.validateUser(userDto);
     const accessToken = await this.generateToken(user);
-    return { user, accessToken: accessToken.token };
+    return { userId: user.id, accessToken: accessToken.accessToken };
   }
 
   async registration(userDto: CreateUserDto) {
@@ -43,7 +43,8 @@ export class AuthService {
   private async generateToken(user: User) {
     const payLoad = { email: user.email, id: user.id, roles: user.roles };
     return {
-      token: this.jwtService.sign(payLoad),
+      userId: user.id,
+      accessToken: this.jwtService.sign(payLoad),
     };
   }
 
