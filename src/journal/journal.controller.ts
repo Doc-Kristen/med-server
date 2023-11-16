@@ -6,6 +6,7 @@ import {
   UseGuards,
   Headers,
   Patch,
+  Param,
 } from '@nestjs/common';
 import { CreateJournalDto } from './dto/create-journal.dto';
 import { JournalService } from './journal.service';
@@ -26,13 +27,13 @@ export class JournalController {
     return this.journalService.create(authorization, dto);
   }
 
-  @Delete()
+  @Delete(':id')
   @UseGuards(JwtAuthGuard)
   delete(
     @Headers('authorization') authorization: string,
-    @Body() dto: DeleteJournalDto,
+    @Param('id') id: string,
   ) {
-    return this.journalService.delete(authorization, dto.journalId);
+    return this.journalService.delete(authorization, +id);
   }
 
   @Patch()
