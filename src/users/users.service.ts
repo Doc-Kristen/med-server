@@ -1,15 +1,23 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  forwardRef,
+  Inject,
+} from '@nestjs/common';
 import { User } from './users.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RolesService } from 'src/roles/roles.service';
 import { AddRoleDto } from './dto/add-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
+import { AuthService } from 'src/auth/auth.service';
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User) private userRepository: typeof User,
     private roleService: RolesService,
+    @Inject(forwardRef(() => AuthService)) private authService: AuthService,
   ) {}
   async createUser(dto: CreateUserDto) {
     const user = await this.userRepository.create(dto);
@@ -32,12 +40,23 @@ export class UsersService {
     return user;
   }
 
-  async getUserById(id: number) {
+  async getUserById(id: number, token: string) {
+    const userId = await this.authService.extractUserIdFromToken(token);
+    if (id !== userId) {
+      throw new HttpException('Нет прав доступа', HttpStatus.FORBIDDEN);
+    }
     const user = await this.userRepository.findOne({
       where: { id },
       include: { all: true },
     });
-    return user;
+
+    if (user && user.id === userId) {
+      return user;
+    }
+    throw new HttpException(
+      'Ошибка при получении пользователя',
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
   }
 
   async addRole(dto: AddRoleDto) {

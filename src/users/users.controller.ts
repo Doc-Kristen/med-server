@@ -2,9 +2,11 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   UseGuards,
   UsePipes,
+  Headers,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
@@ -36,6 +38,17 @@ export class UsersController {
   @Get()
   getAll() {
     return this.usersService.getAllUsers();
+  }
+
+  @ApiOperation({ summary: 'Получить пользователя по ID' })
+  @ApiResponse({ status: 200, type: User })
+  @UseGuards(RolesGuard)
+  @Get(':id')
+  getUserById(
+    @Param('id') id: string,
+    @Headers('authorization') token: string,
+  ) {
+    return this.usersService.getUserById(+id, token);
   }
 
   @ApiOperation({ summary: 'Выдать роль' })

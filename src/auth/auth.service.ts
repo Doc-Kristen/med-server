@@ -3,6 +3,8 @@ import {
   HttpStatus,
   Injectable,
   UnauthorizedException,
+  forwardRef,
+  Inject,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
@@ -13,8 +15,8 @@ import { User } from 'src/users/users.model';
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UsersService,
     private jwtService: JwtService,
+    @Inject(forwardRef(() => UsersService)) private userService: UsersService,
   ) {}
   async login(
     userDto: CreateUserDto,

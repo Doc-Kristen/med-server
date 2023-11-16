@@ -1,4 +1,4 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { SequelizeModule } from '@nestjs/sequelize';
@@ -15,7 +15,7 @@ import { Journal } from 'src/journal/journal.model';
   imports: [
     SequelizeModule.forFeature([User, Role, UserRoles, Journal]),
     RolesModule,
-    forwardRef(() => AuthModule),
+    AuthModule,
   ],
   exports: [UsersService],
 })
