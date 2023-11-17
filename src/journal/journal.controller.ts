@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { CreateJournalDto } from './dto/create-journal.dto';
 import { JournalService } from './journal.service';
-import { DeleteJournalDto } from './dto/delete-journal.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UpdateJournalDto } from './dto/update-journal.dto';
 
