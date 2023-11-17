@@ -11,7 +11,6 @@ import {
 import { CreateJournalDto } from './dto/create-journal.dto';
 import { JournalService } from './journal.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { UpdateJournalDto } from './dto/update-journal.dto';
 
 @Controller('journal')
 export class JournalController {
@@ -38,13 +37,10 @@ export class JournalController {
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   update(
+    @Param('id') id: string,
     @Headers('authorization') authorization: string,
-    @Body() dto: UpdateJournalDto,
+    @Body() dto: CreateJournalDto,
   ) {
-    return this.journalService.update(
-      authorization,
-      dto.journalId,
-      dto.newJournal,
-    );
+    return this.journalService.update(authorization, +id, dto);
   }
 }

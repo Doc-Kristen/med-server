@@ -31,12 +31,12 @@ export class CreateJournalDto {
   readonly heartRate: number;
 
   @IsString({ message: 'Должно быть строкой' })
-  @Length(3, 300, { message: 'Не меньше 3 и не больше 300 символов' })
+  @Length(0, 500, { message: 'Не больше 500 символов' })
   @IsOptional()
   readonly medications?: string;
 
   @IsString({ message: 'Должно быть строкой' })
-  @Length(3, 300, { message: 'Не меньше 3 и не больше 300 символов' })
+  @Length(0, 500, { message: 'Не больше 500 символов' })
   @IsOptional()
   readonly complaints?: string;
 }
