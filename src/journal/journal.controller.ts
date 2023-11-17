@@ -35,7 +35,7 @@ export class JournalController {
     return this.journalService.delete(authorization, +id);
   }
 
-  @Patch()
+  @Patch(':id')
   @UseGuards(JwtAuthGuard)
   update(
     @Headers('authorization') authorization: string,
