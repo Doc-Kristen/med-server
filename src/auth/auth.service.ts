@@ -11,6 +11,7 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcryptjs';
 import { User } from 'src/users/users.model';
+import { AuthResponse } from './models/auth-response.model';
 
 @Injectable()
 export class AuthService {
@@ -48,6 +49,17 @@ export class AuthService {
       userId: user.id,
       accessToken: this.jwtService.sign(payLoad),
     };
+  }
+
+  async checkAuth(token: string): Promise<AuthResponse> {
+    try {
+      const userToken = token.split(' ')[1];
+      const decodedToken = await this.jwtService.decode(userToken);
+      const isAuth = decodedToken !== null;
+      return { isAuthenticated: isAuth };
+    } catch (error) {
+      throw new UnauthorizedException('Недействительный токен');
+    }
   }
 
   private async validateUser(userDto: CreateUserDto) {
