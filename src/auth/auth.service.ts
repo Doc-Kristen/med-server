@@ -62,6 +62,8 @@ export class AuthService {
     }
   }
 
+  async logout() {}
+
   private async validateUser(userDto: CreateUserDto) {
     const user = await this.userService.getUserByEmail(userDto.email);
     if (!user) {
